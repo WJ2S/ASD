@@ -12,26 +12,27 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - task: UseNode@1
+  - task: UsePythonVersion@0
     inputs:
-      versionSpec: '10.x'
-      checkLatest: true
-
-  - task: UseComposer@2
-    inputs:
-      version: '2.x'
-      checkLatest: true
+      versionSpec: '3.x'
+      addToPath: true
 
   - checkout: self
 
   - script: |
-      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine php -v
+      php -v
     displayName: 'Check PHP Version'
 
   - script: |
-      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine composer install
+      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      php composer-setup.php
+      php -r "unlink('composer-setup.php');"
+    displayName: 'Install Composer'
+
+  - script: |
+      php composer.phar install
     displayName: 'Install Dependencies'
 
   - script: |
-      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine vendor/bin/phpunit
+      php vendor/bin/phpunit
     displayName: 'Run PHPUnit Tests'
