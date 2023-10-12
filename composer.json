@@ -1,0 +1,26 @@
+{
+    "name": "your-name/your-project",
+    "description": "Description of your project",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "your@email.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "your/dependency": "^1.0"
+        // Add any other dependencies your project requires
+    },
+    "autoload": {
+        "psr-4": {
+            "YourNamespace\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+        // Add any other development dependencies (like PHPUnit) here
+    }
+}
