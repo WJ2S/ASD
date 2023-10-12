@@ -1,0 +1,23 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+- main
+jobs:
+- job: PHPUnit
+  displayName: 'Run PHPUnit Tests'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: UsePhpVersion@7.4
+    inputs:
+      versionSpec: '7.4'
+      addToPath: true
+
+  - script: composer install
+    displayName: 'Install Dependencies'
+
+  - script: vendor/bin/phpunit
+    displayName: 'Run PHPUnit Tests'
