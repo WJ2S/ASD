@@ -11,9 +11,9 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - task: UsePhpVersion7.4
+  - task: UsePhpVersion@0
     inputs:
-      versionSpec: '7.4'
+      versionSpec: '7.x'
       addToPath: true
 
   - script: composer install
