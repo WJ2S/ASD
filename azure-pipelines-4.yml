@@ -5,19 +5,33 @@
 
 trigger:
 - main
+
 jobs:
 - job: PHPUnit
   displayName: 'Run PHPUnit Tests'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - task: UsePhpVersion@0
+  - task: UseNode@1
     inputs:
-      versionSpec: '7.x'
-      addToPath: true
+      versionSpec: '10.x'
+      checkLatest: true
 
-  - script: composer install
+  - task: UseComposer@2
+    inputs:
+      version: '2.x'
+      checkLatest: true
+
+  - checkout: self
+
+  - script: |
+      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine php -v
+    displayName: 'Check PHP Version'
+
+  - script: |
+      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine composer install
     displayName: 'Install Dependencies'
 
-  - script: vendor/bin/phpunit
+  - script: |
+      docker run -v $(Build.Repository.LocalPath):/app -w /app php:7.4-cli-alpine vendor/bin/phpunit
     displayName: 'Run PHPUnit Tests'
